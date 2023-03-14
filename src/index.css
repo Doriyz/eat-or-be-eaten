@@ -1,4 +1,7 @@
 body {
+  overflow: hidden; 
+  /* i add this because i want it look like a traditional game windows */
+
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
