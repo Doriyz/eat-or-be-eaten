@@ -3,9 +3,84 @@ import Fish from './components/Fish';
 import React,{useState} from 'react';
 import StartButton from './StartButton';
 
-function App() {
+function App(props) {
   
   const [isPlaying, setIsPlaying] = useState.apply(false);
+
+  const [allFishes, setAllFishes] = useState(props.allFishes);
+  const [playerFish, setPlayerFish] = useState({x:0,y:0,speed:5,direction:'ltr'});
+
+  function checkCollision(fish){
+    return true;                          //temp
+  }
+
+  function move(fishes){
+    const newfishes = fishes.map((fish)=>{
+      return {...fish, x: fish.x+1, y: fish.y+1};
+    });
+    setAllFishes(newfishes);
+  }
+
+  // class Fish{
+  //   constructor(x, y ,speed, direction){
+  //     this.x = x;
+  //     this.y = y;
+  //     this.speed = speed;
+  //     this.direction = direction; // ltr or rtl
+  //   }
+
+  //   move(){
+  //     // update position based on the speed and direction
+  //     this.x = this.x + 1;
+  //     this.y = this.y + 1;
+  //   }
+
+  //   checkCollision(fish){
+
+  //   }
+  // }
+
+  function gameLoop(){
+    // update all fished
+    // for(const fish of allFishes){
+    //   move(fish);
+    //   checkCollision(playerFish);
+    // }
+    move(allFishes);
+    // playerFish.move();
+  }
+
+  const [intervalId, setIntervalId] = useState(null);
+  
+  function gameStart(){
+    const id = setIntervalId(gameLoop, 1000);
+    setIntervalId(id);
+  }
+
+  function gamePause(){
+    clearInterval(intervalId);
+    setIntervalId(null);
+  }
+
+  gameStart();
+
+  // for test
+  // allFishes.push(new Fish(0, 0, 5, 'ltr'));
+
+  setAllFishes([...allFishes, {x:0,y:0,speed:5,direction:'ltr'}]);
+
+
+  const fishList = allFishes.map((fish) => (
+    <Fish 
+      x={fish.x}
+      y={fish.y}  
+      isPlaying={isPlaying}
+    />
+  ));
+
+  function setPlaying(){
+    setIsPlaying(!isPlaying);
+  }
 
   return (
 
@@ -17,15 +92,19 @@ function App() {
       <div> score and lifes </div>
 
       <div>
-        <StartButton isPlaying={isPlaying} setPlaying={()=>{setIsPlaying(!isPlaying)}}></StartButton>
+        <StartButton isPlaying={isPlaying} setPlaying={setPlaying}></StartButton>
       </div>
 
       <div id="game-window">
         <div className="game-content"> 
           <p>hello</p>
+          {/* <Fish isPlaying={isPlaying}></Fish>
           <Fish isPlaying={isPlaying}></Fish>
-          <Fish isPlaying={isPlaying}></Fish>
-          <Fish isPlaying={isPlaying}></Fish>
+          <Fish isPlaying={isPlaying}></Fish> */}
+
+          {fishList}
+
+
         </div>
       </div>
 

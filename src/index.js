@@ -4,10 +4,21 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+import Game from './Game';
+import Example from './example/Example';
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
+const allFishes=[
+  {x:10,y:10,speed:5,direction:'ltr'},
+  {x:100,y:100,speed:5,direction:'ltr'},
+];
+
 root.render(
   <React.StrictMode>
-    <App />
+    <App allFishes={allFishes}/>
+    {/* <Game/> */}
+    {/* <Example/> */}
   </React.StrictMode>
 );
 

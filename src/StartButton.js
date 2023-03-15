@@ -7,7 +7,7 @@ export default function(props){
     function handleClick(){
         if(props.isPlaying == false) setButtonText('Start');
         else setButtonText('Pause');
-        props.setPlaying(!props.isPlaying);
+        props.setPlaying();
     }
 
     return (

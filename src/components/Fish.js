@@ -7,6 +7,13 @@ export default function Fish(props) {
     const classname = props.isPlaying? 'fish': 'fish stop';
 
     return (
-        <img src={src} alt="fish" className={classname}/>
+        <img 
+            src={src} 
+            alt="fish" 
+            className={classname}
+            top={props.y}
+            left={props.x}
+            position='absolute'    
+        />
     )
 }
