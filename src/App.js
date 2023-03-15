@@ -1,23 +1,37 @@
-import logo from './logo.svg';
 import './App.css';
+import Fish from './components/Fish';
+import React,{useState} from 'react';
+import StartButton from './StartButton';
 
 function App() {
+  
+  const [isPlaying, setIsPlaying] = useState.apply(false);
+
   return (
 
     <div id="game-container">
-      <div class="header">
+      <div className="header">
         <h1>EAT OR BE EATEN</h1>
       </div>
       
+      <div> score and lifes </div>
+
+      <div>
+        <StartButton isPlaying={isPlaying} setPlaying={()=>{setIsPlaying(!isPlaying)}}></StartButton>
+      </div>
+
       <div id="game-window">
-        <div id="game-content"> 
+        <div className="game-content"> 
           <p>hello</p>
+          <Fish isPlaying={isPlaying}></Fish>
+          <Fish isPlaying={isPlaying}></Fish>
+          <Fish isPlaying={isPlaying}></Fish>
         </div>
       </div>
 
       
 
-      <div class="footer">
+      <div className="footer">
         <p>Made by Maysion</p>
       </div>
     </div>

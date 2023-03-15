@@ -1,0 +1,19 @@
+@keyframes swim {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(1900%);
+    }
+  }
+  
+
+  .fish {
+    animation: swim 2s linear infinite;
+    display: block;
+    
+  }
+  
+  .fish.stop {
+    animation-play-state: paused;
+  }
