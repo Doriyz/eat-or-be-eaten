@@ -10,8 +10,10 @@ import Example from './example/Example';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 const allFishes=[
-  {x:10,y:10,speed:5,direction:'ltr'},
-  {x:100,y:100,speed:5,direction:'ltr'},
+  {x:10,y:40,speed:5,direction:'ltr', key:1},
+  {x:15,y:30,speed:8,direction:'ltr', key:2},
+  {x:5,y:50,speed:25,direction:'ltr', key:2},
+  {x:20,y:43,speed:10,direction:'ltr', key:2},
 ];
 
 root.render(

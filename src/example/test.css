@@ -1,0 +1,28 @@
+.container {
+    position: relative;
+  }
+  
+  .object {
+    position: absolute;
+    left: calc(100% * var(--x));
+    top: calc(100% * var(--y));
+    width: 50px;
+    height: 50px;
+    background-color: red;
+  }
+  
+  .object:nth-child(2) {
+    --x: 0.5;
+    --y: 0.25;
+  }
+  
+  .object:nth-child(3) {
+    --x: 0.75;
+    --y: 0.5;
+  }
+  
+  .object:nth-child(4) {
+    --x: 0.25;
+    --y: 0.75;
+  }
+  

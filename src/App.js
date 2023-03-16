@@ -1,86 +1,76 @@
 import './App.css';
 import Fish from './components/Fish';
-import React,{useState} from 'react';
-import StartButton from './StartButton';
+import React,{useState, useEffect} from 'react';
+import StartButton from './components/StartButton';
 
 function App(props) {
   
-  const [isPlaying, setIsPlaying] = useState.apply(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [intervalId, setIntervalId] = useState(null);
+
 
   const [allFishes, setAllFishes] = useState(props.allFishes);
-  const [playerFish, setPlayerFish] = useState({x:0,y:0,speed:5,direction:'ltr'});
+  const [playerFish, setPlayerFish] = useState({x:0,y:0,speed:5,direction:'ltr', key:0});
 
-  function checkCollision(fish){
-    return true;                          //temp
-  }
-
-  function move(fishes){
-    const newfishes = fishes.map((fish)=>{
-      return {...fish, x: fish.x+1, y: fish.y+1};
-    });
-    setAllFishes(newfishes);
-  }
-
-  // class Fish{
-  //   constructor(x, y ,speed, direction){
-  //     this.x = x;
-  //     this.y = y;
-  //     this.speed = speed;
-  //     this.direction = direction; // ltr or rtl
-  //   }
-
-  //   move(){
-  //     // update position based on the speed and direction
-  //     this.x = this.x + 1;
-  //     this.y = this.y + 1;
-  //   }
-
-  //   checkCollision(fish){
-
-  //   }
-  // }
 
   function gameLoop(){
-    // update all fished
-    // for(const fish of allFishes){
-    //   move(fish);
-    //   checkCollision(playerFish);
-    // }
-    move(allFishes);
-    // playerFish.move();
+    console.log(allFishes);
+
+    // move 
+    const newfishes = allFishes.map((fish)=>{
+      console.log(fish.x+1);
+      const newx = fish.x + 1;
+      const newy = fish.y + 1;
+      return {...fish, x: newx, y: newy};
+    });
+    console.log(newfishes);
+
+    setAllFishes([newfishes]);
+
+
+    // check collision
   }
 
-  const [intervalId, setIntervalId] = useState(null);
-  
-  function gameStart(){
-    const id = setIntervalId(gameLoop, 1000);
+  const startGame = () => {
+    setIsPlaying(isPlaying => !isPlaying);
+
+    const id = setInterval(() => {
+      // gameLoop();
+
+
+      setAllFishes(allFishes => allFishes.map(fish => {
+        return {...fish, x: fish.x+fish.speed/500};
+      }));
+
+      console.log('loop');
+    }, 0.5);
     setIntervalId(id);
   }
 
-  function gamePause(){
+
+  const pauseGame = () => {
+    setIsPlaying(isPlaying => !isPlaying);
     clearInterval(intervalId);
     setIntervalId(null);
   }
 
-  gameStart();
 
-  // for test
-  // allFishes.push(new Fish(0, 0, 5, 'ltr'));
-
-  setAllFishes([...allFishes, {x:0,y:0,speed:5,direction:'ltr'}]);
+  useEffect(() => {
+    return () => clearInterval(intervalId);
+  }, [intervalId]);
 
 
-  const fishList = allFishes.map((fish) => (
+  const fishList = (allFishes)?allFishes.map((fish) => (
     <Fish 
       x={fish.x}
       y={fish.y}  
       isPlaying={isPlaying}
+      key={fish.key}
     />
-  ));
+  )):"";
 
-  function setPlaying(){
-    setIsPlaying(!isPlaying);
-  }
+
+  console.log(intervalId);
 
   return (
 
@@ -90,17 +80,26 @@ function App(props) {
       </div>
       
       <div> score and lifes </div>
-
-      <div>
-        <StartButton isPlaying={isPlaying} setPlaying={setPlaying}></StartButton>
-      </div>
+      
 
       <div id="game-window">
         <div className="game-content"> 
           <p>hello</p>
-          {/* <Fish isPlaying={isPlaying}></Fish>
-          <Fish isPlaying={isPlaying}></Fish>
-          <Fish isPlaying={isPlaying}></Fish> */}
+          {/* <Fish isPlaying={isPlaying} y={10} x={25}></Fish>
+          <Fish isPlaying={isPlaying} y={20} x={15}></Fish> */}
+          {/* <Fish isPlaying={isPlaying} y={20} x={15}></Fish> */}
+          {/* <Fish isPlaying={isPlaying} y={30} x={15}></Fish> */}
+
+          <div>
+        {
+          
+          intervalId ? (
+            <button onClick={pauseGame}>Pause</button>
+          ) : (
+            <button onClick={startGame}>Start</button>
+          )
+        }
+      </div>
 
           {fishList}
 
