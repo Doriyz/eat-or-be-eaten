@@ -13,3 +13,9 @@
 
 + add favicon
 + add fish. it can not move yet
+
+
+
+### 3.16
+
++ fix the bug appeared after adding the function of swimming

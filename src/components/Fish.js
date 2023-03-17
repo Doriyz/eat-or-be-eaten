@@ -14,7 +14,7 @@ export default function Fish(props) {
             className={classname}
             // style={styleText}
             // style="top:50px; left:20px;"
-            style={{top: props.y + 'vh',left: props.x + 'vh',position: 'absolute'}}
+            style={{top: props.y + 'vh',left: props.x + 'vw',position: 'absolute', width:5+'vw'}}
         />
     )
 }

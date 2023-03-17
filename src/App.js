@@ -1,7 +1,6 @@
 import './App.css';
 import Fish from './components/Fish';
 import React,{useState, useEffect} from 'react';
-import StartButton from './components/StartButton';
 
 function App(props) {
   
@@ -80,31 +79,20 @@ function App(props) {
       </div>
       
       <div> score and lifes </div>
-      
-
-      <div id="game-window">
-        <div className="game-content"> 
-          <p>hello</p>
-          {/* <Fish isPlaying={isPlaying} y={10} x={25}></Fish>
-          <Fish isPlaying={isPlaying} y={20} x={15}></Fish> */}
-          {/* <Fish isPlaying={isPlaying} y={20} x={15}></Fish> */}
-          {/* <Fish isPlaying={isPlaying} y={30} x={15}></Fish> */}
-
-          <div>
-        {
-          
+      <div>
+        {         
           intervalId ? (
-            <button onClick={pauseGame}>Pause</button>
+            <button className="btn toggle-btn" onClick={pauseGame}>Pause</button>
           ) : (
-            <button onClick={startGame}>Start</button>
+            <button className="btn toggle-btn" onClick={startGame}>Start</button>
           )
         }
       </div>
 
-          {fishList}
+      <div id="game-window">
+        {/* <p>hello</p> */}
+        {fishList}
 
-
-        </div>
       </div>
 
       
@@ -113,32 +101,6 @@ function App(props) {
         <p>Made by Maysion</p>
       </div>
     </div>
-
-
-
-    // <div className="App">
-
-      
-
-    //   {/* fellow will be discarded */}
-    //   <header className="App-header">
-    //     <img src={logo} className="App-logo" alt="logo" />
-    //     <p>
-    //       Edit <code>src/App.js</code> and save to reload.
-    //     </p>
-    //     <a
-    //       className="App-link"
-    //       href="https://reactjs.org"
-    //       target="_blank"
-    //       rel="noopener noreferrer"
-    //     >
-    //       Learn React
-    //     </a>
-    //   </header>
-    // </div>
-
-
-
 
   );
 }
