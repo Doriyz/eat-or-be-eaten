@@ -1,5 +1,5 @@
 import React,{useState} from "react";
-import src from './fish.png';
+import src from './fish.svg';
 // import './Fish.css'
 
 export default function Fish(props) {
@@ -14,7 +14,7 @@ export default function Fish(props) {
             className={classname}
             // style={styleText}
             // style="top:50px; left:20px;"
-            style={{top: props.y + 'vh',left: props.x + 'vw',position: 'absolute', width:5+'vw'}}
+            style={{top: props.y + 'vh',left: props.x + 'vw',position: 'absolute', width:props.power+'vw',transform:props.direction==='ltr'?'':'scaleX(-1)',}}
         />
     )
 }

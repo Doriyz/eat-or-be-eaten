@@ -65,6 +65,7 @@ function App(props) {
       y={fish.y}  
       isPlaying={isPlaying}
       key={fish.key}
+      power={fish.power}
     />
   )):"";
 
