@@ -38,7 +38,8 @@ function App(props) {
 
 
       setAllFishes(allFishes => allFishes.map(fish => {
-        return {...fish, x: fish.x+fish.speed/500};
+        if(fish.direction=='ltr') return {...fish, x: fish.x+fish.speed/500};
+        else return {...fish, x: fish.x-fish.speed/500};
       }));
 
       console.log('loop');
@@ -66,6 +67,7 @@ function App(props) {
       isPlaying={isPlaying}
       key={fish.key}
       power={fish.power}
+      direction={fish.direction}
     />
   )):"";
 
