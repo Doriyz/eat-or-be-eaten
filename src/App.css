@@ -33,7 +33,7 @@
 
 
 #game-window{
-  background-color: #91c4ea;
+  background-color: #97d4f5;
   /* background-image: url('../public/7.jpg'); */
   display: flex;
   justify-content: center;
@@ -42,6 +42,9 @@
   min-height: 100px;
 
   position: relative;
+  overflow: hidden;
+  /* this is important to set the fish */
+
 
   border: 2px solid black;
   height: 800px;

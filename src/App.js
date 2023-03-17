@@ -3,7 +3,7 @@ import Fish from './components/Fish';
 import React,{useState, useEffect} from 'react';
 
 function App(props) {
-  
+  const frame = 0.1;
   const [isPlaying, setIsPlaying] = useState(false);
   const [intervalId, setIntervalId] = useState(null);
 
@@ -43,7 +43,7 @@ function App(props) {
       }));
 
       console.log('loop');
-    }, 0.5);
+    }, frame);
     setIntervalId(id);
   }
 
