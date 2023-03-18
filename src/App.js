@@ -1,5 +1,6 @@
 import './App.css';
 import Fish from './components/Fish';
+import Player from './components/Player';
 import React,{useState, useEffect} from 'react';
 import { nanoid } from "nanoid";
 
@@ -8,9 +9,9 @@ function App(props) {
   const frame = 0.1;
   const max_y = 70;
   const min_y = -5;
-  const max_power = 30;
+  const max_power = 25;
   const min_power = 2;
-  const max_speed = 18;
+  const max_speed = 30;
   const min_speed = 5;
 
   const [isPlaying, setIsPlaying] = useState(false);
@@ -18,7 +19,14 @@ function App(props) {
   const [timer, setTimer] = useState(0); // used to count the frame time
 
   const [allFishes, setAllFishes] = useState(props.allFishes);
-  const [playerFish, setPlayerFish] = useState({x:0,y:0,speed:5,direction:'ltr', key:0});
+  const [playerFish, setPlayerFish] = useState({
+    x:40,
+    y:30,
+    speed:5,
+    power:min_power+5,
+    direction:'ltr',
+    key:0
+  });
 
 
   function addFish(){
@@ -28,7 +36,7 @@ function App(props) {
     const power = Math.floor(Math.random() * (max_power - min_power) ) + min_power;
     if(r > 0.5){
       const newFishes= {
-        x:-5,
+        x:-10,
         y:y,
         speed:speed,
         direction:'ltr',
@@ -39,7 +47,7 @@ function App(props) {
     }
     else{
       const newFishes= {
-        x:105,
+        x:110,
         y:y,
         speed:speed,
         direction:'rtl',
@@ -50,8 +58,6 @@ function App(props) {
     }
      
   }
-
-  
 
 
   const startGame = () => {
@@ -90,15 +96,48 @@ function App(props) {
 
   useEffect(() => {
     // generate fish randomly
-
-      // const a = Math.floor(Math.random() * (1000/frame * 10 - 1000/frame) ) + 1000/frame;
       
-      const a = 100;
-      if(timer % 50 == 0){
+      if(timer % 500 == 0){
         addFish();
         console.log(timer);
       }
-  },[timer%50]);
+  },[timer / 500]);
+
+  function handleKeyDown(event) {
+    if(!isPlaying) return;
+      switch (event.keyCode) {
+        case 37: // Left arrow
+          console.log('left move');
+          setPlayerFish(playerFish=>{
+            return {...playerFish, x: playerFish.x-1, direction:'rtl'};
+          });
+          break;
+        case 38: // Up arrow
+          // Move player up
+          console.log('up move');
+          setPlayerFish(playerFish=>{
+            return {...playerFish, y: playerFish.y-1};
+          });
+          break;
+        case 39: // Right arrow
+          // Move player right
+          console.log('right move');
+          setPlayerFish(playerFish=>{
+            return {...playerFish, x: playerFish.x+1, direction:'ltr'};
+          });
+          break;
+        case 40: // Down arrow
+          // Move player down
+          console.log('down move');
+          setPlayerFish(playerFish=>{
+            return {...playerFish, y: playerFish.y+1};
+          });
+          break;
+        default:
+          // Do nothing for other keys
+          break;
+      }
+  }
 
 
 
@@ -106,13 +145,19 @@ function App(props) {
     <Fish 
       x={fish.x}
       y={fish.y}  
-      isPlaying={isPlaying}
       key={fish.key}
       power={fish.power}
       direction={fish.direction}
     />
   )):"";
 
+  const player = <Player
+  x={playerFish.x}
+  y={playerFish.y}  
+  key={playerFish.key}
+  power={playerFish.power}
+  direction={playerFish.direction}
+/>;
 
   return (
 
@@ -132,10 +177,10 @@ function App(props) {
         }
       </div>
 
-      <div id="game-window">
+      <div id="game-window" tabIndex={0} onKeyDown={handleKeyDown}>
         {/* <p>hello</p> */}
         {fishList}
-
+        {player}
       </div>
 
       
