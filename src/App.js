@@ -7,26 +7,41 @@ import { nanoid } from "nanoid";
 
 function App(props) {
   const frame = 0.1;
-  const max_y = 70;
-  const min_y = -5;
+  const max_y = 700;
+  const min_y = -50;
   const max_power = 25;
   const min_power = 2;
-  const max_speed = 30;
-  const min_speed = 5;
+  const max_speed = 380;
+  const min_speed = 250;
+  const dis_factor = 1;
 
   const [isPlaying, setIsPlaying] = useState(false);
   const [intervalId, setIntervalId] = useState(null);
   const [timer, setTimer] = useState(0); // used to count the frame time
 
+  const [score, setScore] = useState(0);
+  const [lifes, setLifes] = useState(5);
+
+
   const [allFishes, setAllFishes] = useState(props.allFishes);
   const [playerFish, setPlayerFish] = useState({
-    x:40,
-    y:30,
+    // x:40,
+    // y:30,
+    x:0,
+    y:0,
     speed:5,
     power:min_power+5,
     direction:'ltr',
     key:0
   });
+
+  function checkCollision(fish){
+    // comare the position of playerfish with input fish
+    const dis_x = Math.abs(fish.x + -playerFish.x);
+    const dis_y = Math.abs(fish.y-playerFish.y);
+
+  }
+
 
 
   function addFish(){
@@ -36,7 +51,7 @@ function App(props) {
     const power = Math.floor(Math.random() * (max_power - min_power) ) + min_power;
     if(r > 0.5){
       const newFishes= {
-        x:-10,
+        x:-100,
         y:y,
         speed:speed,
         direction:'ltr',
@@ -47,7 +62,7 @@ function App(props) {
     }
     else{
       const newFishes= {
-        x:110,
+        x:1100,
         y:y,
         speed:speed,
         direction:'rtl',
@@ -71,9 +86,10 @@ function App(props) {
       setAllFishes(allFishes => allFishes.map(fish => {
         if(fish.direction=='ltr') return {...fish, x: fish.x+fish.speed/500};
         else return {...fish, x: fish.x-fish.speed/500};
-      }).filter(fish => fish.x < 110 && fish.x > -10)   // filter the fish go far
+      }).filter(fish => fish.x < 1100 && fish.x > -100)   // filter the fish go far
       );
-    
+      // check collision 
+      checkCollision(player, tempFish);
 
       console.log('loop');
 
@@ -139,8 +155,6 @@ function App(props) {
       }
   }
 
-
-
   const fishList = (allFishes)?allFishes.map((fish) => (
     <Fish 
       x={fish.x}
@@ -157,7 +171,20 @@ function App(props) {
   key={playerFish.key}
   power={playerFish.power}
   direction={playerFish.direction}
-/>;
+  />;
+
+  const [tempFish, setTempFish] = useState({x:0,y:0,speed:5,direction:'ltr',power:3, key:100000});
+  const temp =  <Fish
+  x={tempFish.x}
+  y={tempFish.y}  
+  key={tempFish.key}
+  power={tempFish.power}
+  direction={tempFish.direction}
+  />;
+
+
+
+
 
   return (
 
@@ -166,7 +193,8 @@ function App(props) {
         <h1>EAT OR BE EATEN</h1>
       </div>
       
-      <div> score and lifes </div>
+      <div> score:{score}</div>
+      <div> lifes:{lifes}</div>
       <div>
         {         
           intervalId ? (
@@ -178,8 +206,11 @@ function App(props) {
       </div>
 
       <div id="game-window" tabIndex={0} onKeyDown={handleKeyDown}>
-        {/* <p>hello</p> */}
         {fishList}
+
+        {/* {temp} */}
+        
+
         {player}
       </div>
 
