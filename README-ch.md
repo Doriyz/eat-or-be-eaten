@@ -2,10 +2,6 @@
 
 这是一个活泼快乐的大鱼吃小鱼游戏，它的功能和以往的游戏相似，使用键盘的上下左右移动绿色的那只鱼，它会吃掉别个鱼，或者自己被吃掉。
 
-The rule is normal. Use '↑↓← →' in your keyboard to move the player fish. Don't crush into fishes bigger than you, or you will be eaten.
-
-There is still something to be improved. If you play it, it is easy to find the potential bugs ::cry:.  It is nice for u to pull request to help me with them.
-
 ## 如何在电脑上运行这个游戏
 
 + 将这个仓库克隆到本地
