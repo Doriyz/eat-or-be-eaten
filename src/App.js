@@ -13,12 +13,13 @@ function App(props) {
   const min_power = 2;
   const max_speed = 380;
   const min_speed = 280;
-  const dis_factor = 4;
   const w_h = 1.5;
   const grow_factor = 0.1;
   const end_power = max_power*0.5;
   const min_fish = 5;
   const death_time = 1000/frame * 2; // 2 seconds
+  let dis_factor = 6;
+
 
   const [dealthTime, setDeathTime] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -85,6 +86,7 @@ function App(props) {
     allFishes.forEach((fish)=>{
       console.log('check collision');
       // console.log(fish.x);
+      dis_factor = 8 - Math.max(fish.power, playerFish.power)/5; 
       console.log(fish.x, fish.y);
       console.log(playerFish.x, playerFish.y);
       const dis_x = Math.abs(fish.x-playerFish.x + (fish.power - playerFish.power)/2);
@@ -101,7 +103,7 @@ function App(props) {
             console.log('eaten');
             setLifes(lifes => lifes-1);
             setDeathTime(death_time);
-            if(lifes == 0) {
+            if(lifes == 1) {
               alert('Game Over');
               setKeyMap({
                 '37':false,
@@ -151,7 +153,7 @@ function App(props) {
     }
     else{
       const newFishes= {
-        x:1100,
+        x:1200,
         y:y,
         speed:speed,
         direction:'rtl',
