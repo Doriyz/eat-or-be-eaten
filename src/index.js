@@ -16,8 +16,8 @@ const allFishes=[
   {x:45,y:340,speed:10,direction:'ltr',power:5, key:4},
   {x:380,y:246,speed:18,direction:'rtl',power:20, key:5},
   {x:660,y:130,speed:10,direction:'rtl',power:5, key:6},
-  {x:860,y:130,speed:10,direction:'rtl',power:5, key:6},
-  {x:1160,y:330,speed:10,direction:'rtl',power:5, key:6},
+  {x:860,y:130,speed:10,direction:'rtl',power:5, key:7},
+  {x:1160,y:330,speed:10,direction:'rtl',power:5, key:8},
 ];
 
 root.render(
