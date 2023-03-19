@@ -13,6 +13,7 @@ export default function Fish(props) {
                 width:props.power*8+'px',
                 transform:props.direction==='ltr'?'scaleX(-1)':'scaleX(1)',
                 // backgroundColor: 'blue',
+                opacity: props.opacity,
             }}
         />
 

@@ -12,10 +12,15 @@ function App(props) {
   const max_power = 25;
   const min_power = 2;
   const max_speed = 380;
-  const min_speed = 250;
-  const dis_factor = 8;
+  const min_speed = 280;
+  const dis_factor = 4;
   const w_h = 1.5;
+  const grow_factor = 0.1;
+  const end_power = max_power*0.5;
+  const min_fish = 5;
+  const death_time = 1000/frame * 2; // 2 seconds
 
+  const [dealthTime, setDeathTime] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [intervalId, setIntervalId] = useState(null);
   const [timer, setTimer] = useState(0); // used to count the frame time
@@ -25,27 +30,26 @@ function App(props) {
 
   const [allFishes, setAllFishes] = useState(props.allFishes);
   const [playerFish, setPlayerFish] = useState({
-    // x:40,
-    // y:30,
-    x:0,
-    y:0,
-    speed:0.5,
-    power:min_power+5,
+    x:300,
+    y:200,
+    speed:0.8,
+    power:min_power+4,
     direction:'ltr',
-    key:0
+    key:0,
+    opacity:1,
   });
 
 
-  const [tempFish, setTempFish] = useState([{x:0,y:0,speed:5,direction:'ltr',power:15, key:100000}]);
-  const temp = (tempFish)? tempFish.map((fish) => (
-    <Fish 
-      x={fish.x}
-      y={fish.y}  
-      key={fish.key}
-      power={fish.power}
-      direction={fish.direction}
-    />
-  )):"";
+  // const [tempFish, setTempFish] = useState([{x:0,y:0,speed:5,direction:'ltr',power:15, key:100000}]);
+  // const temp = (tempFish)? tempFish.map((fish) => (
+  //   <Fish 
+  //     x={fish.x}
+  //     y={fish.y}  
+  //     key={fish.key}
+  //     power={fish.power}
+  //     direction={fish.direction}
+  //   />
+  // )):"";
 
   const [keyMap, setKeyMap] = useState({
     '37': false,
@@ -56,7 +60,28 @@ function App(props) {
   
 
   useEffect(()=>{
-    console.log('start check');
+    // check if the player is dead
+    if(dealthTime > 0){
+      setDeathTime(dealthTime => dealthTime - 1);
+      if(dealthTime == 1){
+        setPlayerFish({
+          ...playerFish,
+          opacity:1,
+        });
+      }
+      if(dealthTime == death_time){
+        // set opacity of player fish to 0.5;
+        setPlayerFish(playerFish => ({...playerFish, opacity:0.5,}));
+      }
+      return;
+    }
+      
+
+    // too less fish
+    if(allFishes.length < min_fish){
+      addFish();
+    }
+    // check collision
     allFishes.forEach((fish)=>{
       console.log('check collision');
       // console.log(fish.x);
@@ -75,8 +100,9 @@ function App(props) {
             //eaten
             console.log('eaten');
             setLifes(lifes => lifes-1);
+            setDeathTime(death_time);
             if(lifes == 0) {
-              alert('game over');
+              alert('Game Over');
               setKeyMap({
                 '37':false,
                 '38':false,
@@ -90,11 +116,13 @@ function App(props) {
             // eat
             console.log('eat');
             setScore(score => score+fish.power);
-            setPlayerFish({...playerFish, power: playerFish.power + fish.power/3 +1});
+            setPlayerFish({...playerFish, power: playerFish.power + fish.power* grow_factor +0.5});
             // delete the fish
-            // setAllFishes(allFishes.filter(allFish => allFish.x != fish.x && allFish.y != fish.y && allFish.power != fish.power));
             setAllFishes(allFishes.filter(allFish => allFish.key != fish.key));
-            // setAllFishes(allFishes.filter(allFish => allFish.id != fish.id));
+            // addFish();
+            if(playerFish.power > max_power + end_power){
+              alert('You Win!');
+            }
           }
         }
       }
@@ -103,39 +131,6 @@ function App(props) {
   }, [playerFish, allFishes]);
   
 
-
-  // use effect to edit allFishes is not work
-  // try to check collision in timer
-
-  function checkCollision(fish){
-    console.log(fish.x);
-      const dis_x = Math.abs(fish.x-playerFish.x + (fish.power - playerFish.power)/2);
-      const dis_y = Math.abs(fish.y-playerFish.y + (fish.power - playerFish.power)/2/w_h);
-      // console.log(dis_x,dis_y);
-      if(dis_x < Math.max(fish.power*dis_factor, playerFish.power*dis_factor)){
-        if(dis_y < Math.max(fish.power*dis_factor/w_h, playerFish.power*dis_factor/w_h)){
-          // collision
-          if(fish.power > playerFish.power){
-            //eaten
-            console.log('eaten');
-            setLifes(lifes => lifes-1);
-            if(lifes == 0) alert('game over');
-            
-          }
-          else if(fish.power < playerFish.power){
-            // eat
-            console.log('eat');
-            setScore(score => score+fish.power);
-            setPlayerFish({...playerFish, power: playerFish.power + fish.power/3 +1});
-            // delete the fish
-            // setallFishes(allFishes.filter(allFish => allFish.x != fish.x && allFish.y != fish.y && allFish.power != fish.power));
-            setAllFishes(allFishes.filter(allFish => allFish.id != fish.id));
-            // setAllFishes(allFishes.filter(allFish => allFish.id != fish.id));
-          }
-        }
-      }
-
-  }
 
 
   function addFish(){
@@ -221,11 +216,6 @@ function App(props) {
     setIntervalId(null);
   }
 
-  useEffect(() => {
-    console.log('tempFish has changed');
-    console.log(tempFish);
-  }, [JSON.stringify(tempFish)]);
-
 
 
   useEffect(() => {
@@ -247,6 +237,7 @@ function App(props) {
 
   
   useEffect(()=>{
+    // response to keydown
     setAllFishes(allFishes => allFishes.map(fish => {
       if(fish.direction=='ltr') return {...fish, x: fish.x+fish.speed/500};
       else return {...fish, x: fish.x-fish.speed/500};
@@ -272,7 +263,7 @@ function App(props) {
       return {...playerFish, y: playerFish.y+playerFish.speed};
     });
 
-    
+
   },[timer]);
 
 
@@ -295,10 +286,9 @@ function App(props) {
     key={playerFish.key}
     power={playerFish.power}
     direction={playerFish.direction}
+    opacity={playerFish.opacity}
   />;
 
-
-  
 
 
 
@@ -324,22 +314,24 @@ function App(props) {
         <h1>EAT OR BE EATEN</h1>
       </div>
       
-      <div> score:{score}</div>
-      <div> lifes:{lifes}</div>
-      <div>
+      <div className='msg'>
         {         
           intervalId ? (
-            <button className="btn toggle-btn" onClick={pauseGame}>Pause</button>
+            <button className="toggle-btn" onClick={pauseGame}>Pause</button>
           ) : (
-            <button className="btn toggle-btn" onClick={startGame}>Start</button>
+            <button className="toggle-btn" onClick={startGame}>Start</button>
           )
         }
+
+        <p className='score'>Score: {score}</p>
+        <p className='score'>Lifes: {lifes}</p>
       </div>
+
 
       <div id="game-window" tabIndex={0} onKeyDown={onKeyDown} onKeyUp={onKeyUp}>
         {fishList}
 
-        {temp}
+        {/* {temp} */}
         
 
         {player}
