@@ -31,3 +31,5 @@ There is still something to be improved. If you play it, it is easy to find the 
 Here is a video of me playing the game:
 
 <video src="E:/Repositories/FrontEnd-learn/eat-or-be-eaten/log-img/eat-or-be-eaten.mp4"></video>
+
+However, github may not support previewing it online. You can view `eat-or-be-eaten.mp4` in the dorectory `log-img`.
