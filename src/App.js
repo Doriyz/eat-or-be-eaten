@@ -2,7 +2,7 @@ import './App.css';
 import Fish from './components/Fish';
 import Player from './components/Player';
 import React,{useState, useEffect} from 'react';
-import { nanoid } from "nanoid";
+import {nanoid} from "nanoid";
 
 
 function App(props) {
@@ -13,10 +13,10 @@ function App(props) {
   const min_power = 2;
   const max_speed = 380;
   const min_speed = 280;
-  const w_h = 1.5;
+  const w_h = 2;
   const grow_factor = 0.1;
-  const end_power = max_power*0.5;
-  const min_fish = 5;
+  const end_power = max_power*2;
+  const min_fish = 9;
   const death_time = 1000/frame * 2; // 2 seconds
   let dis_factor = 6;
 
@@ -31,7 +31,7 @@ function App(props) {
 
   const [allFishes, setAllFishes] = useState(props.allFishes);
   const [playerFish, setPlayerFish] = useState({
-    x:300,
+    x:400,
     y:200,
     speed:0.8,
     power:min_power+4,
@@ -64,13 +64,13 @@ function App(props) {
     // check if the player is dead
     if(dealthTime > 0){
       setDeathTime(dealthTime => dealthTime - 1);
-      if(dealthTime == 1){
+      if(dealthTime === 1){
         setPlayerFish({
           ...playerFish,
           opacity:1,
         });
       }
-      if(dealthTime == death_time){
+      if(dealthTime === death_time){
         // set opacity of player fish to 0.5;
         setPlayerFish(playerFish => ({...playerFish, opacity:0.5,}));
       }
@@ -86,14 +86,18 @@ function App(props) {
     allFishes.forEach((fish)=>{
       console.log('check collision');
       // console.log(fish.x);
-      dis_factor = 8 - Math.max(fish.power, playerFish.power)/5; 
+      // dis_factor = 8 - Math.max(fish.power, playerFish.power)/10; 
       console.log(fish.x, fish.y);
       console.log(playerFish.x, playerFish.y);
       const dis_x = Math.abs(fish.x-playerFish.x + (fish.power - playerFish.power)/2);
       const dis_y = Math.abs(fish.y-playerFish.y + (fish.power - playerFish.power)/2/w_h);
       console.log(dis_x,dis_y);
-      const x = Math.max(fish.power*dis_factor, playerFish.power*dis_factor);
-      const y = Math.max(fish.power*dis_factor/w_h, playerFish.power*dis_factor/w_h);
+      let x = Math.max(fish.power*dis_factor, playerFish.power*dis_factor);
+      let y = Math.max(fish.power*dis_factor/w_h, playerFish.power*dis_factor/w_h);
+      if(playerFish.power > max_power / 2){
+        x -= playerFish.power*1;
+        y -= playerFish.power*1/w_h;
+      }
       console.log(x, y);
       if(dis_x < x){
         if(dis_y < y){
@@ -103,7 +107,7 @@ function App(props) {
             console.log('eaten');
             setLifes(lifes => lifes-1);
             setDeathTime(death_time);
-            if(lifes == 1) {
+            if(lifes === 1) {
               alert('Game Over');
               setKeyMap({
                 '37':false,
@@ -120,7 +124,7 @@ function App(props) {
             setScore(score => score+fish.power);
             setPlayerFish({...playerFish, power: playerFish.power + fish.power* grow_factor +0.5});
             // delete the fish
-            setAllFishes(allFishes.filter(allFish => allFish.key != fish.key));
+            setAllFishes(allFishes.filter(allFish => allFish.key !== fish.key));
             // addFish();
             if(playerFish.power > max_power + end_power){
               alert('You Win!');
@@ -132,9 +136,7 @@ function App(props) {
     })
   }, [playerFish, allFishes]);
   
-
-
-
+  
   function addFish(){
     const r = Math.random();
     const y = Math.floor(Math.random() * (max_y - min_y) ) + min_y;
