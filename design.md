@@ -2,7 +2,7 @@
 
 ##### 项目难点
 
-+ 设计![06484018](C:/Users/Maysion/AppData/Local/Temp/SGPicFaceTpBq/5304/06484018.png)的移动：
++ 设计鱼群的移动：
 
   开始考虑使用css的keyframe进行实现，但keyframe无法检测到用户输入，所以keyframe可以让鱼动起来却不能实现吃鱼的效果。无法满足游戏的交互性
 
